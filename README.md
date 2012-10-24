@@ -21,16 +21,16 @@
 
 ## About
 
-   ##What is threaded comments? 
+   What is threaded comments? 
       
-    You can find them in news.ycombinator.com comments.
+   You can find them in news.ycombinator.com comments.
 
-   ##How do you store threaded comments? 
+   How do you store threaded comments? 
       
-    Threaded comments are basically hierarchical data, there are bunch of ways you can store a hierarchical data in relational/non-relational database.
+   Threaded comments are basically hierarchical data, there are bunch of ways you can store a hierarchical data in relational/non-relational database.
 
   
-  ##Solution
+  Solution
   
   ```
 
