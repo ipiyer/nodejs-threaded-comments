@@ -1,0 +1,20 @@
+doctype 5
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    title="Threaded comments"
+  body
+    - function untie(comments){
+      - for(var comment in comments){
+        li=comments[comment].text
+        - if(comments[comment].children){
+          ul
+            - untie(comments[comment].children)
+        - }
+      - }
+    - }
+      
+       
+    ul
+      - untie(threads)
+    

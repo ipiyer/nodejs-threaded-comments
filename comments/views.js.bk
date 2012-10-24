@@ -1,0 +1,95 @@
+var couch = require('./couch');
+var comments = new couch({'name': "comments"});
+
+
+exports.comment = function(req, res, next) {
+    var comment = req.body.comment;
+    var parentID = req.body.parentID;
+    var messageID = "f401f4a29f9f2bdc8b43c20fc100134d";
+
+    var mDoc = {"type": "comment", "text": comment, "parentID": parentID, "messageID": messageID};
+    
+    // Update the couchdb with the comment.
+
+    comments.post({"doc": mDoc}, function(err, resp){
+	if(err){
+	    res.send(500, "Commenting Failed");
+	    return;
+	}
+
+	res.send(200, "Update Successfully!");
+    });
+}
+
+
+
+exports.getComments = function(req, res, next) {
+
+    comments.view('_design/comment/_view/thread', null , function(err, resp){
+        
+	if(err){
+	    res.send(500, "Error");
+	    return;
+	}
+
+	var rows = resp.rows, threads = {}, comment, value;
+	
+	var rec = function(comment, threads) {
+	    
+	    for(var thread in threads){
+		value = threads[thread];
+		console.log(thread, comment.parentID);
+		if(thread == comment.parentID){
+		    value.children[comment._id] = comment;
+		    return;
+		}
+		
+		if(value.children){
+		    rec(comment, value.children);
+		}
+		
+	    }
+	}
+	
+	for(var i = 0; i < rows.length; i++){
+	    
+	    comment = rows[i].value;
+	    comment.children = {};
+	    var parentID = comment.parentID;
+
+	    
+	    if(!parentID) {
+		threads[comment._id] = comment;
+		continue;
+	    }
+	    
+	    // first level child;
+	    
+	    if(threads[parentID]){
+		threads[parentID].children[comment._id] = comment;
+		continue;
+	    }
+
+	    
+	    rec(comment, threads);
+	    
+	}
+
+	res.render("comments.jade", {'threads': threads});
+    });
+
+}
+
+
+
+// 1. 1st level child - lookup on thread.
+
+
+
+// 2. nth level child - if 1st level failed try to find top level and insert
+
+
+
+// 3. If parent not found - find the parent and insert  (check this case may not happen)
+
+// 
