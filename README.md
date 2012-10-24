@@ -21,16 +21,18 @@
 
 ## About
 
-   What is threaded comments? 
+   ##What is threaded comments? 
       
-      You can find them in hackernew comments.
+    You can find them in news.ycombinator.com comments.
 
-   How do you store threaded comments? 
+   ##How do you store threaded comments? 
       
-      Threaded comments are basically hierarchical data, there are bunch of ways you can store a hierarchical data in relational/non-relational database.
+    Threaded comments are basically hierarchical data, there are bunch of ways you can store a hierarchical data in relational/non-relational database.
 
   
-  Solution
+  ##Solution
+  
+  ```
 
         The solution that i used here is Parent links, the structure look something like
 
@@ -40,8 +42,9 @@
         -> {'text': "child2", parentid: "child1" id: "child3"} // reply to the child1
 
         I retereieve all the comment related to message and construct a hierarchical json.
+  ```          
 
-        
+```        
 {
     "parent": {
         'text': "parent",
@@ -63,6 +66,7 @@
         }
     }
 }
+```
  
 
 ## TO 
