@@ -17,6 +17,7 @@
    clone this repo from git   
 
    $ npm install
+   $ node tools/createdb.js
 
 
 ## About
